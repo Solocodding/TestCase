@@ -31,7 +31,7 @@ public class AppTest {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                driver.quit();
+                // driver.quit();
                 sc.close();
             }
         }
