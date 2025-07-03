@@ -38,7 +38,6 @@ public class Signup {
         
         Thread.sleep(1500);
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='start-quiz-container']/button"))).click();
-        Thread.sleep(4000);
     }
     
     public String[] GenerateEmails(int n){
@@ -53,10 +52,10 @@ public class Signup {
             StringBuffer usermail=new StringBuffer();
 
             for(int i=0;i<mailLength;i++){
-                int mailchar=(int)(Math.random()*36);
-                usermail.append((GmailString.charAt(mailchar)));
+                int mailcharIndex=(int)(Math.random()*36);
+                usermail.append((GmailString.charAt(mailcharIndex)));
             }
-            arr[j]=usermail.toString();
+            arr[j]="cqtest"+usermail.toString();
         }
         return arr;
     }

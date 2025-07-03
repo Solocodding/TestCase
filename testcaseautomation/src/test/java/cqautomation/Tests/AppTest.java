@@ -12,7 +12,7 @@ public class AppTest {
         Scanner sc = new Scanner(System.in);
         // System.out.println("Enter number of user to automate");
         // int n=sc.nextInt();
-        int n = 2;
+        int n = 1;
         WebDriver driver = null;
 
         for (int i = 0; i < n; i++) {
@@ -26,7 +26,7 @@ public class AppTest {
                 signup.autoSignup(driver, arr, i);
 
                 TestPage testpage = new TestPage(driver);
-                testpage.selectSections();
+                testpage.attemptAllSections();
 
             } catch (Exception e) {
                 e.printStackTrace();
