@@ -5,61 +5,51 @@ import java.util.List;
 
 public class SolveSection {
     WebDriver driver;
-    WebElement section;
+    int sectionCount, questCount;
 
-    public SolveSection(WebDriver driver , WebElement section){
-        this.driver=driver;
-        this.section=section;
+    public SolveSection(WebDriver driver, int sectionCount, int questCount) {
+        this.driver = driver;
+        this.sectionCount = sectionCount;
+        this.questCount = questCount;
     }
 
-    public void solveAllQuestions() throws Exception{
+    public void solveAllQuestions() throws Exception {
+        List<WebElement> sections = driver.findElements(By
+            .xpath("//div[@class='dashboard-segment-container active' or @class='dashboard-segment-container ']"));
 
-        int totalQuestions = section.findElements(By.xpath(".//tbody/tr")).size();
+        WebElement currentSection = sections.get(sectionCount);
 
+        WebElement questionToSolve = currentSection.findElements(By.xpath(".//tbody/tr")).get(questCount);
 
-        for(int i=0;i<totalQuestions;i++){
+        String qType = questionToSolve.findElement(By.xpath(".//td[3]")).getText();
+        System.out.println(qType);
 
-            System.out.println("Section reference " + i + section);
-            // get questions in every iteration to avoid staleElement 
-            List<WebElement> questions = section.findElements(By.xpath(".//tbody/tr"));
-            System.out.println("Wrong Number "+ i);
-            WebElement quest =questions.get(i);
+        switch (qType) {
+            case "MCQ":
+                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
+                MCQAttempt mcqAttempt = new MCQAttempt(driver);
+                break;
+            case "MQ":
+                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
+                MQAttempt mqAttempt = new MQAttempt(driver);
+                break;
+            case "Coding":
+                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
+                CodingAttempt codingAttempt = new CodingAttempt(driver);
+                break;
+            case "Subjective":
+                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
+                SubjectiveAttempt subjectiveAttempt = new SubjectiveAttempt(driver);
+                subjectiveAttempt.solve();
+                break;
+            case "Web":
+                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
+                WebAttempt webAttempt = new WebAttempt(driver);
+                break;
 
-            String qType=quest.findElement(By.xpath(".//td[3]")).getText();
-
-            switch (qType) {
-                case "MCQ" :
-                    quest.findElement(By.xpath(".//td[5]/a")).click();                        
-                    MCQAttempt mcqAttempt=new MCQAttempt(driver);
-                    break;
-                case "MQ" :
-                    quest.findElement(By.xpath(".//td[5]/a")).click();
-                    MQAttempt mqAttempt = new  MQAttempt(driver);
-                    break;
-                case "Coding" :
-                    quest.findElement(By.xpath(".//td[5]/a")).click();
-                    CodingAttempt codingAttempt = new CodingAttempt(driver);
-                    break;
-                case "Subjective" :
-                    // wait.until(ExpectedConditions.elementToBeClickable(By.xpath(".//td[2]"))).click();
-                    quest.findElement(By.xpath("//tbody/tr/td[5]/a")).click();
-                    System.out.println("Subject Q solution started and clicked");
-                    SubjectiveAttempt subjectiveAttempt = new SubjectiveAttempt(driver);
-                    subjectiveAttempt.solve();
-                    System.out.println("Subjective solved");
-                    break;    
-                case "Web" :    
-                    quest.findElement(By.xpath(".//td[5]/a")).click();
-                    WebAttempt webAttempt = new WebAttempt(driver);
-                    break;
-                    
-                default:
-                    System.out.println("Select the correct question type");
-                    break;
-            }
+            default:
+                System.out.println("Select the correct question type");
+                break;
         }
-    }
-    public void submitSection(){
-        
     }
 }
