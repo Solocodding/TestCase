@@ -15,22 +15,22 @@ public class SubjectiveAttempt {
         this.driver = driver;
     }
 
-    public void solve() throws Exception {
-        boolean withFile = driver.findElements(By.xpath("//input[@type='file']")).size() > 0;
-        System.out.println(withFile);
+    public void solve() {
+        
         // Set answer in Quill editor using JS
-        ((JavascriptExecutor) driver).executeScript(
-            "document.querySelector('.ql-editor').innerHTML = arguments[0];", Ans);
+        // ((JavascriptExecutor) driver).executeScript(
+        //     "document.querySelector('.ql-editor').innerHTML = arguments[0];", Ans);
 
-        if (withFile) {
-            System.out.println("File upload field found, uploading...");
+        driver.findElement(By.cssSelector("div.ql-editor")).sendKeys(Ans);
+
+        try{
             String file = "/Users/amarveersingh/Downloads/FileUpload.pdf";
-            driver.findElement(By.xpath("//input[@type='file']")).sendKeys(file);
-        } else {
-            System.out.println("No file upload option.");
+            
+            driver.findElement(By.id("upldFile")).sendKeys(file);
         }
-
+        catch(Exception e){
+            System.out.println("No file");
+        }
         driver.findElement(By.xpath("//button/span[text()='submit']")).click();
     }
-
 }

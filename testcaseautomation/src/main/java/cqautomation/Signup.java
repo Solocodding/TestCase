@@ -19,7 +19,7 @@ public class Signup {
 
     public void autoSignup(WebDriver driver , String arr[], int i) throws Exception{
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10000));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));
         
         
