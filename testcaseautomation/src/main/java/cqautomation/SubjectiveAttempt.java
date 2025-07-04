@@ -1,10 +1,13 @@
 package cqautomation;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SubjectiveAttempt {
     WebDriver driver;
@@ -17,19 +20,24 @@ public class SubjectiveAttempt {
 
     public void solve() throws Exception {
         
-        driver.findElement(By.cssSelector("div.ql-editor")).sendKeys(Ans);
-        // Thread.sleep(2000);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement editor = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div.ql-editor")));
+        editor.sendKeys(Ans);
         try{
-            Path filePath = Paths.get("src","test","resources","FileUpload.pdf");
-            File file = filePath.toFile();
-            // String file = "/Users/amarveersingh/Downloads/FileUpload.pdf";
-            driver.findElement(By.id("upldFile")).sendKeys(file.getAbsolutePath());
+            String filePath = "src/test/resources/fileupload.pdf";
+            File file =new File(filePath);
+
+            if(!file.exists()){
+                System.out.println("File not found");
+            }
+            else{
+                driver.findElement(By.id("upldFile")).sendKeys(file.getAbsolutePath());
+            }
         }
         catch(Exception e){
-            System.out.println("No file");
+            System.out.println("No file upload option");
         }
         driver.findElement(By.xpath("//button/span[text()='submit']")).click();
-        // Thread.sleep(2000);
         driver.findElement(By.xpath("//div[@class='app-logo']/button")).click();
     }
 }
