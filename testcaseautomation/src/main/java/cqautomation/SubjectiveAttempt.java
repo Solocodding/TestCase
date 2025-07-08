@@ -21,8 +21,13 @@ public class SubjectiveAttempt {
     public void solve() throws Exception {
         
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement editor = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div.ql-editor")));
+        
+        WebElement editor = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.cssSelector("div.ql-editor")));
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ql-editor")));
+        editor.click();
         editor.sendKeys(Ans);
+        
         try{
             String filePath = "src/test/resources/fileupload.pdf";
             File file =new File(filePath);

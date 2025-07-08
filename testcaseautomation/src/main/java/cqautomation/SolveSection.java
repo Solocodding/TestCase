@@ -1,7 +1,10 @@
 package cqautomation;
 
 import org.openqa.selenium.*;
-import java.util.List;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class SolveSection {
     WebDriver driver;
@@ -15,44 +18,46 @@ public class SolveSection {
 
     public void solveAllQuestions() throws Exception {
 
-        // List<WebElement> sections = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy((By
-        //     .xpath("//div[@class='dashboard-segment-container active' or @class='dashboard-segment-container ']"))));
-        // System.out.println("total sections= "+sections.size());
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        List<WebElement> sections = driver.findElements(By
-            .xpath("//div[@class='dashboard-segment-container active' or @class='dashboard-segment-container ']"));
-        System.out.println("total sections= "+sections.size());
+        String sectionXpath = "//*[@class='dashboard-segment-container ' or @class='dashboard-segment-container active']";
+        
+        String qType = wait
+        .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(sectionXpath)))
+        .get(sectionCount)
+        .findElements(By.xpath(".//tbody/tr"))
+        .get(questCount)
+        .findElement(By.xpath(".//td[3]")).getText();
+        
+        // String qType = questionToSolve.findElement(By.xpath(".//td[3]")).getText();
 
-        WebElement currentSection = sections.get(sectionCount);
+        WebElement questionLink = wait
+            .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(sectionXpath)))
+            .get(sectionCount)
+            .findElements(By.xpath(".//tbody/tr"))
+            .get(questCount)
+            .findElement(By.xpath(".//td[2]/a"));
 
-        WebElement questionToSolve = currentSection.findElements(By.xpath(".//tbody/tr")).get(questCount);
-
-        String qType = questionToSolve.findElement(By.xpath(".//td[3]")).getText();
-        System.out.println(qType);
+        questionLink.click(); 
 
         switch (qType) {
             case "MCQ":
-                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
                 MCQAttempt mcqAttempt = new MCQAttempt(driver);
                 mcqAttempt.solve();
                 break;
             case "MQ":
-                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
                 MQAttempt mqAttempt = new MQAttempt(driver);
                 mqAttempt.solve();
                 break;
             case "Coding":
-                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
                 CodingAttempt codingAttempt = new CodingAttempt(driver);
                 codingAttempt.solve();
                 break;
             case "Subjective":
-                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
                 SubjectiveAttempt subjectiveAttempt = new SubjectiveAttempt(driver);
                 subjectiveAttempt.solve();
                 break;
             case "Web":
-                questionToSolve.findElement(By.xpath(".//td[5]/a")).click();
                 WebAttempt webAttempt = new WebAttempt(driver);
                 webAttempt.solve();
                 break;

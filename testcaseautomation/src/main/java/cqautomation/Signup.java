@@ -19,24 +19,27 @@ public class Signup {
 
     public void autoSignup(WebDriver driver , String arr[], int i) throws Exception{
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));
-        
-        
 
         driver.manage().window().maximize();
         driver.get("https://tests.cqtestga.com/test/1750997410369");
-        driver.findElement(By.xpath("//span[text()='sign up']")).click();
-            
+        // driver.get("https://tests.cqtestga.com/test/1751882623443");
+        // driver.get("https://tests.cqtestga.com/test/1751690961413");
+        // driver.get("https://tests.cqtestga.com/test/1751715740072");
+        //mq
+        // driver.get("https://tests.cqtestga.com/test/1747480945432");
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='sign up']"))).click();
+
         driver.findElement(By.id("name")).sendKeys(arr[i]);
         driver.findElement(By.id("email")).sendKeys(arr[i] + "@gmail.com");
         driver.findElement(By.id("password")).sendKeys("Master@123");                
         driver.findElement(By.id("quizCode")).sendKeys("1234");
         driver.findElement(By.id("mobile")).sendKeys("1234567890");
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
-
         
-        Thread.sleep(1500);
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@type=\"submit\"]"))).click();
+        Thread.sleep(2000);
+                
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='start-quiz-container']/button"))).click();
     }
     
