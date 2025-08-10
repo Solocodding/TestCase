@@ -1,11 +1,13 @@
 package tests;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -26,6 +28,7 @@ public class MQ {
         String qScore = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='score']"))).getAttribute("value");
         String qKeywords="";
         String qDescription = "";
+        String MQ_Questions="";
 
         try{
             // List<WebElement> tags = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
@@ -41,11 +44,23 @@ public class MQ {
             System.out.println("No keywords or descriptions");
         }
         
+        List<WebElement> allQuestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+            By.xpath("//textarea[@rows='2' and @placeholder='Question']")));
+
+        System.out.println("Total MQ quest= " + allQuestions.size());
+        
+        for (WebElement option : allQuestions) {
+            String quest = option.getText().trim();
+            MQ_Questions += quest+" ";
+        }
+        
         Row row = sheet.createRow(rowNum);
         row.createCell(0).setCellValue("MQ");
         row.createCell(1).setCellValue(qName);
         row.createCell(2).setCellValue(qDescription);
         row.createCell(3).setCellValue(qScore);
+        row.createCell(7).setCellValue(MQ_Questions);
+        
 
         driver.switchTo().defaultContent();
         driver.close();

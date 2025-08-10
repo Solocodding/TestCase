@@ -49,7 +49,7 @@ public class Coding {
         List<WebElement> allLanguages = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
             By.xpath("(//div[@class=\"ant-tabs-nav-list\"])[2]/div[@data-node-key]/div")));
 
-        System.out.println("Total options fetched = " + allLanguages.size());
+        // System.out.println("Total options fetched = " + allLanguages.size());
         
         for (WebElement option : allLanguages) {
             String lang = option.getText().trim();

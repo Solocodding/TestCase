@@ -46,8 +46,6 @@ public class MCQ {
 
         List<WebElement> allOptionElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
             By.xpath("//textarea[@rows='2']")));
-
-        System.out.println("Total options fetched = " + allOptionElements.size());
         
         for (WebElement option : allOptionElements) {
             String lang = option.getText().trim();
