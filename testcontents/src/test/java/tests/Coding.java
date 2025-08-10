@@ -1,11 +1,15 @@
 package tests;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -19,13 +23,14 @@ public class Coding {
         this.sheet = sheet;
         this.rowNum = rowNum;
     }
-    public void codingSolve(){
+    public void codingSolve() throws Exception{
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         String qName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='txtQuesTitle']"))).getAttribute("value");
         String qScore = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='score']"))).getAttribute("value");
         String qKeywords="";
         String qDescription = "";
+        String allowedLanguages ="";
 
         try{
             // List<WebElement> tags = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
@@ -40,12 +45,24 @@ public class Coding {
         }catch(Exception e){
             System.out.println("No keywords or descriptions");
         }
+
+        List<WebElement> allLanguages = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+            By.xpath("(//div[@class=\"ant-tabs-nav-list\"])[2]/div[@data-node-key]/div")));
+
+        System.out.println("Total options fetched = " + allLanguages.size());
+        
+        for (WebElement option : allLanguages) {
+            String lang = option.getText().trim();
+            allowedLanguages += lang+" ";
+        }
+        // System.out.println(allowedLanguages);
         
         Row row = sheet.createRow(rowNum);
         row.createCell(0).setCellValue("Coding");
         row.createCell(1).setCellValue(qName);
         row.createCell(2).setCellValue(qDescription);
         row.createCell(3).setCellValue(qScore);
+        row.createCell(4).setCellValue(allowedLanguages);
 
         driver.switchTo().defaultContent();
         driver.close();

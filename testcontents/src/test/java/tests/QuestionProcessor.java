@@ -16,7 +16,6 @@ public class QuestionProcessor {
     private WebDriver driver;
     private XSSFSheet sheet;
     private int sectionIndex;
-    private int rowNum = 0;
 
     public QuestionProcessor(WebDriver driver, XSSFSheet sheet, int sectionIndex) {
         this.driver = driver;
@@ -24,21 +23,15 @@ public class QuestionProcessor {
         this.sectionIndex = sectionIndex;
     }
 
-    public void processQuestions() throws Exception{
+    public int processQuestions(int rowNum) throws Exception{
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         
         String originalTab = driver.getWindowHandle();
-        //  System.out.println("ORG.   "+originalTab);
-
-        //Header of sheets;
-        createHeader();
-
+       
         //Question count for each section 
         List<WebElement> questions = wait.until(ExpectedConditions
                 .presenceOfAllElementsLocatedBy(By.xpath("//table//tr[" + sectionIndex + "]//table/tbody/tr")));
-        // System.out.println("totla q " +questions.size());
-
-        // System.out.println("total questions in section " +sectionIndex+"   " + questions.size());
+                
         for (int j = 0; j < questions.size(); j++) {
             //selecting each question one by one 
             WebElement question = wait.until(ExpectedConditions
@@ -47,7 +40,6 @@ public class QuestionProcessor {
             //Question type
             wait.until(ExpectedConditions.visibilityOf(question));
             String QType = question.findElement(By.xpath(".//td[5]")).getText(); // Question type
-            // System.out.println(QType); ////////
 
             WebElement editButton;
             if(QType.equals("Coding")){
@@ -105,18 +97,6 @@ public class QuestionProcessor {
             }
             driver.switchTo().window(originalTab);
         }
-    }
-    private void createHeader() {
-        org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(rowNum++);
-
-        headerRow.createCell(0).setCellValue("Question Type");
-        headerRow.createCell(1).setCellValue("Question Name");
-        headerRow.createCell(2).setCellValue("Question Description");
-        headerRow.createCell(3).setCellValue("Question Score");
-        // headerRow.createCell(3).setCellValue("Question Keywords");
-        headerRow.createCell(4).setCellValue("Allowed languages");
-        headerRow.createCell(5).setCellValue("MCQ Options");
-        headerRow.createCell(6).setCellValue("Web TestCases");
-        headerRow.createCell(7).setCellValue("MQ Questions");
+        return rowNum;
     }
 }
