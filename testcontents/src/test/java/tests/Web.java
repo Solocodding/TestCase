@@ -31,19 +31,17 @@ public class Web {
         String WebTestcases="";
 
         try{
-            // List<WebElement> tags = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-            //     By.xpath("//div[@class='ant-select-selection-overflow']//span/span[@class='ant-tag ant-tag-default css-f9u17k']")));
+            List<WebElement> tags = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                By.xpath("//div[@class='ant-select-selection-overflow']//span/span[@class='ant-tag ant-tag-default css-f9u17k']")));
             
-            // for(WebElement tag: tags){
-            //     qKeywords += tag.getAttribute("value")+" ";
-            // }
+            for(WebElement tag: tags){
+                qKeywords += tag.getText()+" ";
+            }
 
             qDescription = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id=\"txtQues\"]//div[@class=\"ql-editor\"]/p"))).getText();
 
             List<WebElement> allTestcases = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
             By.xpath("//textarea[@rows='2' and @placeholder='Evaluator']")));
-
-            System.out.println("Total web testcase= " + allTestcases.size());
             
             for (WebElement option : allTestcases) {
                 String quest = option.getText().trim();
@@ -60,8 +58,9 @@ public class Web {
         row.createCell(1).setCellValue(qName);
         row.createCell(2).setCellValue(qDescription);
         row.createCell(3).setCellValue(qScore);
+        row.createCell(4).setCellValue(qKeywords);
         if(!WebTestcases.equals("")){
-            row.createCell(6).setCellValue(WebTestcases);
+            row.createCell(7).setCellValue(WebTestcases);
         }
 
         driver.switchTo().defaultContent();

@@ -44,11 +44,11 @@ public class SectionProcessor {
         headerRow.createCell(1).setCellValue("Question Name");
         headerRow.createCell(2).setCellValue("Question Description");
         headerRow.createCell(3).setCellValue("Question Score");
-        // headerRow.createCell(3).setCellValue("Question Keywords");
-        headerRow.createCell(4).setCellValue("Allowed languages");
-        headerRow.createCell(5).setCellValue("MCQ Options");
-        headerRow.createCell(6).setCellValue("Web TestCases");
-        headerRow.createCell(7).setCellValue("MQ Questions");
+        headerRow.createCell(4).setCellValue("Question Keywords");
+        headerRow.createCell(5).setCellValue("Allowed languages");
+        headerRow.createCell(6).setCellValue("MCQ Options");
+        headerRow.createCell(7).setCellValue("Web TestCases");
+        headerRow.createCell(8).setCellValue("MQ Questions");
     }
 }
 

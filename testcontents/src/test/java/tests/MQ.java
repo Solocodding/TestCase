@@ -22,7 +22,7 @@ public class MQ {
         this.rowNum = rowNum;
     }
     public void mqSolve(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         String qName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='txtQuesTitle']"))).getAttribute("value");
         String qScore = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='score']"))).getAttribute("value");
@@ -31,12 +31,12 @@ public class MQ {
         String MQ_Questions="";
 
         try{
-            // List<WebElement> tags = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-            //     By.xpath("//div[@class='ant-select-selection-overflow']//span/span[@class='ant-tag ant-tag-default css-f9u17k']")));
+            List<WebElement> tags = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                By.xpath("//div[@class='ant-select-selection-overflow']//span/span[@class='ant-tag ant-tag-default css-f9u17k']")));
             
-            // for(WebElement tag: tags){
-            //     qKeywords += tag.getAttribute("value")+" ";
-            // }
+            for(WebElement tag: tags){
+                qKeywords += tag.getText()+" ";
+            }
 
             qDescription = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id=\"txtQues\"]//div[@class=\"ql-editor\"]/p"))).getText();
 
@@ -59,7 +59,8 @@ public class MQ {
         row.createCell(1).setCellValue(qName);
         row.createCell(2).setCellValue(qDescription);
         row.createCell(3).setCellValue(qScore);
-        row.createCell(7).setCellValue(MQ_Questions);
+        row.createCell(4).setCellValue(qKeywords);
+        row.createCell(8).setCellValue(MQ_Questions);
         
 
         driver.switchTo().defaultContent();

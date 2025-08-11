@@ -28,7 +28,6 @@ public class Login {
             driver.findElement(By.xpath("//input[@id='email']")).sendKeys(userName);
             driver.findElement(By.xpath("//input[@id='password']")).sendKeys(password);
             driver.findElement(By.xpath("//button[@id='submit']")).click();
-            // Thread.sleep(1000);
             
             List<String> urls=ExcelReader.getUrlsFromExcel(filePath);
             urls.remove(0);
