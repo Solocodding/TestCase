@@ -22,13 +22,17 @@ public class MCQ {
         this.rowNum = rowNum;
     }
     public void mcqSolve(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+        Row row = sheet.createRow(rowNum);
+
+        String url=driver.getCurrentUrl();
+        String QuestID = url.substring(url.lastIndexOf("/") + 1);
 
         String qName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='txtQuesTitle']"))).getAttribute("value");
         String qScore = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='score']"))).getAttribute("value");
         String qKeywords="";
         String qDescription = "";
-        String allOptions="";
 
         try{
             List<WebElement> tags = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
@@ -46,19 +50,41 @@ public class MCQ {
 
         List<WebElement> allOptionElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
             By.xpath("//textarea[@rows='2']")));
-        
+     
+        int i=8;
         for (WebElement option : allOptionElements) {
-            String lang = option.getText().trim();
-            allOptions += lang+" ";
+            String lang ="";
+            lang = option.getText().trim();
+            // System.out.println("Option  : " + lang);
+
+            if(!lang.isEmpty()){
+                row.createCell(i).setCellValue(lang);
+            }
+            i++;
         }
+
+        List<WebElement> checkboxes = driver.findElements(By.cssSelector("input[type='checkbox']"));
+
+        int optionNumber = -1;
+        for (int j = 0; j < checkboxes.size(); j++) {
+            if (checkboxes.get(j).isSelected()) {
+                optionNumber = j + 1;  // because list is 0-based, but options start at 1
+                break;
+            }
+        }
+
         
-        Row row = sheet.createRow(rowNum);
-        row.createCell(0).setCellValue("MCQ");
-        row.createCell(1).setCellValue(qName);
-        row.createCell(2).setCellValue(qDescription);
-        row.createCell(3).setCellValue(qScore);
-        row.createCell(4).setCellValue(qKeywords);
-        row.createCell(6).setCellValue(allOptions);
+        
+
+        row.createCell(1).setCellValue("https://assess.testpad.chitkara.edu.in/questions/preview/" + QuestID);
+        row.createCell(2).setCellValue(QuestID);
+        row.createCell(3).setCellValue("MCQ");
+        row.createCell(4).setCellValue(qName);
+        row.createCell(5).setCellValue(qDescription);
+        row.createCell(6).setCellValue(qScore);
+        row.createCell(7).setCellValue(qKeywords);
+        row.createCell(14).setCellValue(optionNumber);
+    
 
         driver.switchTo().defaultContent();
         driver.close();

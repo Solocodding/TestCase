@@ -24,7 +24,7 @@ public class QuestionProcessor {
     }
 
     public int processQuestions(int rowNum) throws Exception{
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         
         String originalTab = driver.getWindowHandle();
        

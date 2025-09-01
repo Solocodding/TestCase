@@ -21,7 +21,7 @@ public class SectionProcessor {
     }
 
     public void processSections()throws Exception{
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         List<WebElement> sections = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
             By.xpath("//tbody/tr/td[2]//div[@role=\"button\"]")));
@@ -32,23 +32,32 @@ public class SectionProcessor {
         for(int i=0;i<sections.size();i++){
             wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//tbody/tr/td[2]//div[@role=\"button\"]"))).get(i).click();
             QuestionProcessor questionProcessor = new QuestionProcessor(driver , sheet, i+1);
-            // System.out.println("Section handled "+ (i+1));
             rowNum = questionProcessor.processQuestions(rowNum);
             
         }
     }
+
     private void createHeader() {
         org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(0);
 
-        headerRow.createCell(0).setCellValue("Question Type");
-        headerRow.createCell(1).setCellValue("Question Name");
-        headerRow.createCell(2).setCellValue("Question Description");
-        headerRow.createCell(3).setCellValue("Question Score");
-        headerRow.createCell(4).setCellValue("Question Keywords");
-        headerRow.createCell(5).setCellValue("Allowed languages");
-        headerRow.createCell(6).setCellValue("MCQ Options");
-        headerRow.createCell(7).setCellValue("Web TestCases");
-        headerRow.createCell(8).setCellValue("MQ Questions");
+        headerRow.createCell(1).setCellValue("Question Link");  //new
+        headerRow.createCell(2).setCellValue("Question ID");  //new
+        headerRow.createCell(3).setCellValue("Question Type");
+        headerRow.createCell(4).setCellValue("Question Name");
+        headerRow.createCell(5).setCellValue("Question Description");
+        headerRow.createCell(6).setCellValue("Question Score");
+        headerRow.createCell(7).setCellValue("Question Keywords");
+        headerRow.createCell(8).setCellValue("Option1");  //new
+        headerRow.createCell(9).setCellValue("Option2");  //new
+        headerRow.createCell(10).setCellValue("Option3");  //new
+        headerRow.createCell(11).setCellValue("Option4");  //new
+        headerRow.createCell(12).setCellValue("Option5");  //new
+        headerRow.createCell(13).setCellValue("Option6");  //new
+        headerRow.createCell(14).setCellValue("Correct Option");  //new
+        // headerRow.createCell(15).setCellValue("Allowed languages");
+        // headerRow.createCell(16).setCellValue("Web TestCases");
+        // headerRow.createCell(17).setCellValue("MQ Questions");
     }
+
 }
 

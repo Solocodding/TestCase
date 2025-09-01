@@ -24,7 +24,7 @@ public class Coding {
         this.rowNum = rowNum;
     }
     public void codingSolve() throws Exception{
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         String qName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='txtQuesTitle']"))).getAttribute("value");
         String qScore = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='score']"))).getAttribute("value");
@@ -58,6 +58,7 @@ public class Coding {
         // System.out.println(allowedLanguages);
         
         Row row = sheet.createRow(rowNum);
+
         row.createCell(0).setCellValue("Coding");
         row.createCell(1).setCellValue(qName);
         row.createCell(2).setCellValue(qDescription);

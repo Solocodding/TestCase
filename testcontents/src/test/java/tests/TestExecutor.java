@@ -21,24 +21,26 @@ public class TestExecutor {
     }
 
     public void executeTests() throws Exception{
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         //workbook creation
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         for(String url:urls){
-            driver.navigate().to(url);
+            try{
+                driver.navigate().to(url);
             
-            String sheetName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h2"))).getText();
-            XSSFSheet sheet = workbook.createSheet(sheetName);
-            // System.out.println("\n" +sheetName +"\n");   
+                String sheetName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h2"))).getText();
+                XSSFSheet sheet = workbook.createSheet(sheetName);
+                // System.out.println("\n" +sheetName +"\n");   
 
-            SectionProcessor sectionProcessor = new SectionProcessor(driver, sheet);
-            sectionProcessor.processSections();
+                SectionProcessor sectionProcessor = new SectionProcessor(driver, sheet);
+                sectionProcessor.processSections();
+            }catch(Exception e){
+                System.out.println("Issue in Test" + url);
+            }
         }
         
-        // System.out.println("Current directory: " + System.getProperty("user.dir"));
-
         FileOutputStream fos = new FileOutputStream("TestContentReport.xlsx");
         workbook.write(fos);
         fos.close();
